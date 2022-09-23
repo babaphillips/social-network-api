@@ -12,12 +12,12 @@ const UserSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      validate: [validateEmail, "Please type a valid email address"],
-      match: [/^.+@(?:[\w-]+\.)+\w+$/, "Please type a valid email address"],
+      // validate: [validateEmail, "Please type a valid email address"],
+      // match: [/^.+@(?:[\w-]+\.)+\w+$/, "Please type a valid email address"],
     },
     thoughts: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Thought",
       },
     ],
