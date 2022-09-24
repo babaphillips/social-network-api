@@ -50,7 +50,7 @@ const thoughtController = {
         );
       })
       .then((dbUserData) => {
-        if (!dbPizzaData) {
+        if (!dbUserData) {
           res.status(404).json({ message: "No thought found with this id!" });
           return;
         }
@@ -110,7 +110,7 @@ const thoughtController = {
           res.status(404).json({ message: "No user found with this id!" });
           return;
         }
-        res.json(dbPizzaData);
+        res.json(dbThoughtData);
       })
       .catch((err) => res.json(err));
   },
@@ -121,7 +121,7 @@ const thoughtController = {
       { $pull: { replies: { replyId: params.replyId } } },
       { new: true }
     )
-      .then((dbPizzaData) => res.json(dbPizzaData))
+      .then((dbThoughtData) => res.json(dbThoughtData))
       .catch((err) => res.json(err));
   },
 };
