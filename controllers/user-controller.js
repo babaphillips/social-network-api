@@ -3,8 +3,7 @@ const { User } = require("../models");
 const userController = {
   // get all Users
   getAllUser(req, res) {
-    userController
-      .find({})
+    User.find({})
       .populate({
         path: "thoughts",
         select: "-__v",
@@ -41,7 +40,7 @@ const userController = {
   },
 
   // update user by id
-  updateUserById({ params, body }, res) {
+  updateUser({ params, body }, res) {
     User.findOneAndUpdate({ _id: params.id }, body, { new: true })
       .then((dbUserData) => {
         if (!dbUserData) {

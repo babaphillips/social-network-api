@@ -3,20 +3,20 @@ const {
   getAllThought,
   getThoughtById,
   createThought,
-  updateThoughtById,
+  updateThought,
   deleteThoughtById,
   addReaction,
   deleteReaction,
 } = require("../../controllers/thought-controller");
 
 // /api/comments/<pizzaId>
-router.route("/:userId").get(getAllThought).post(createThought);
+router.route("/").get(getAllThought).post(createThought);
 
 // /api/:userId/:thoughtId/
 router
   .route("/:userId/:thoughtId")
   .get(getThoughtById)
-  .put(updateThoughtById)
+  .put(updateThought)
   .put(addReaction)
   .delete(deleteThoughtById);
 
