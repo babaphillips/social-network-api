@@ -39,19 +39,19 @@ const thoughtController = {
       });
   },
   // add thought to user
-  createThought({ params, body }, res) {
+  createThought({ body }, res) {
     console.log(body);
     Thought.create(body)
       .then(({ _id }) => {
         return User.findOneAndUpdate(
-          { _id: params.userId },
+          { _id: body.userId },
           { $push: { thoughts: _id } },
           { new: true }
         );
       })
       .then((dbUserData) => {
         if (!dbUserData) {
-          res.status(404).json({ message: "No thought found with this id!" });
+          res.status(404).json({ message: "No user found with this id!" });
           return;
         }
         res.json(dbUserData);
@@ -61,7 +61,7 @@ const thoughtController = {
 
   // update Thought by id
   updateThought({ params, body }, res) {
-    Thought.findOneAndUpdate({ _id: params.id }, body, {
+    Thought.findOneAndUpdate({ _id: params.thoughtId }, body, {
       new: true,
       runValidators: true,
     })
@@ -94,25 +94,25 @@ const thoughtController = {
 
   // remove comment
   deleteThoughtById({ params }, res) {
-    Thought.findOneAndDelete({ _id: params.id })
+    Thought.findOneAndRemove({ _id: params.thoughtId })
       .then((dbThoughtData) => {
         if (!dbThoughtData) {
           return res.status(404).json({ message: "No thought with this id!" });
         }
+
         return User.findOneAndUpdate(
-          { _id: params.userId },
-          { $pull: { thoughts: params.Id } },
+          { thoughts: params.thoughtId },
+          { $pull: { thoughts: params.thoughtId } },
           { new: true }
         );
       })
       .then((dbUserData) => {
         if (!dbUserData) {
-          res.status(404).json({ message: "No user found with this id!" }); // add successful message
-          return;
+          return res.status(404).json({ message: "No user with this ID!" });
         }
-        res.json(dbThoughtData);
+        res.json({ message: "Thought Deleted" });
       })
-      .catch((err) => res.json(err));
+      .catch((err) => res.status(500).json(err));
   },
   // remove reply
   deleteReaction({ params }, res) {
